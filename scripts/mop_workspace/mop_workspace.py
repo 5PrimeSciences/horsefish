@@ -164,14 +164,12 @@ def delete_files_call(bucket_name, list_of_blobs_to_delete):
     # don't throw an error if blob not found
     # on_error_list = [lambda blob: None]
 
-    def error_handling(blob): print(f"{blob} not found")
-
     storage_client = storage.Client()
 
     # # establish a storage client that will close
     # with storage.Client as storage_client:
     bucket = storage_client.bucket(bucket_name)
-    bucket.delete_blobs(list_of_blobs_to_delete, on_error=error_handling)
+    bucket.delete_blobs(list_of_blobs_to_delete, on_error=lambda blob: None)
 
     # storage_client.close()
 
