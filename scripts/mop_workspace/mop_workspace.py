@@ -169,7 +169,7 @@ def delete_files_call(bucket_name, list_of_blobs_to_delete):
     # # establish a storage client that will close
     # with storage.Client as storage_client:
     bucket = storage_client.bucket(bucket_name)
-    bucket.delete_blobs(list_of_blobs_to_delete, on_error=lambda blob: None)
+    bucket.delete_blobs(list_of_blobs_to_delete, on_error=lambda blob: print(f"{blob} not found"))
 
     # storage_client.close()
 
