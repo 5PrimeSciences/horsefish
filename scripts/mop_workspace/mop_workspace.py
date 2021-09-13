@@ -187,7 +187,7 @@ def delete_files(bucket_name, files_to_delete, verbose):
     storage_client = storage.Client()
 
     bucket = storage_client.bucket(bucket_name)
-    blobs = [bucket.blob(blob_name) for blob_name in blob_names if bucket.blob(blob_name).exists()]
+    blobs = [bucket.blob(blob_name) for blob_name in blob_names if storage.Blob(bucket=bucket_name, name=blob_name).exists()]
 
     # storage_client.close()
 
