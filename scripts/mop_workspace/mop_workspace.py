@@ -332,6 +332,7 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
 
     # Filter out files like .logs and rc.txt
     def can_delete(f, weeks_old_before_delete):
+        return True
         '''Return true if this file should not be deleted in a mop.'''
         time_created = bucket_dict[f]['time_created']
 
