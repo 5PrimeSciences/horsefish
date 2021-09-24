@@ -309,6 +309,9 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
     # Set difference shows files in bucket that aren't referenced
     unreferenced_files = submission_bucket_files - referenced_files
 
+    if verbose:
+        print(f"{len(unreferenced_files)} files are not referenced in the data tables")
+
     ## remove any files in task-level directories that contain referenced files
 
     # find all other files in the same task-level directories as referenced files
@@ -317,8 +320,12 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
         if get_parent_directory(f) in referenced_directories:
             sibling_referenced_files.append(f)
 
+    if verbose:
+        print(f"{len(sibling_referenced_files)} files are siblings to referenced files")
     # remove them from the list of unreferenced files (treat them as referenced)
     unreferenced_files = unreferenced_files - set(sibling_referenced_files)
+    if verbose:
+        print(f"{len(unreferenced_files)} files are unreferenced (not in data table nor siblings to referenced files)")
 
     # Filter out files like .logs and rc.txt
     def can_delete(f, weeks_old_before_delete):
