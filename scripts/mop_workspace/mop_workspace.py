@@ -285,6 +285,9 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
     # Sort user submission ids for future bucket file verification
     submission_ids = set(item['submissionId'] for item in user_submission_request.json())
 
+    if verbose:
+        print(f"Found {len(submission_ids)} submissions in the workspace")
+
     # we will not delete files in any task-level directory containing referenced files.
     referenced_directories = set()
     # get all referenced directories
