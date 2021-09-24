@@ -368,6 +368,8 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
         return True
 
     deletable_files = [f for f in unreferenced_files if can_delete(f, weeks_old)]
+    if verbose:
+        print(f"{len(deletable_files)} files are deletable")
 
     if len(deletable_files) == 0:
         if verbose:
