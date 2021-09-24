@@ -335,8 +335,8 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
         '''Return true if this file should not be deleted in a mop.'''
         time_created = bucket_dict[f]['time_created']
 
-        if time_created > datetime.now(time_created.tzinfo) - timedelta(weeks = weeks_old_before_delete):
-            return False
+        # if time_created > datetime.now(time_created.tzinfo) - timedelta(weeks = weeks_old_before_delete):
+        #     return False
         filename = f.rsplit('/', 1)[-1]
         # Don't delete logs
         if filename.endswith('.log'):
