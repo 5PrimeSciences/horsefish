@@ -58,6 +58,7 @@ def _entity_paginator(namespace, workspace, etype, page_size=500,
 
     return all_entities
 
+
 def _confirm_prompt(message, prompt="\nAre you sure? [y/yes (default: no)]: ",
                     affirmations=("Y", "Yes", "yes", "y")):
     """
@@ -68,6 +69,7 @@ def _confirm_prompt(message, prompt="\nAre you sure? [y/yes (default: no)]: ",
     return answer in affirmations
 
 # HELPER FUNCTIONS FOR MOP
+
 
 def human_readable_size(size_in_bytes):
     '''Takes a bytes value and returns a human-readable string with an
@@ -158,6 +160,7 @@ def list_bucket_files(project, bucket_name, referenced_files, verbose):
         print(f'Found {len(bucket_dict)} files in bucket {bucket_name}')
 
     return bucket_dict
+
 
 # todo add retries
 def delete_files_call(bucket_name, list_of_blobs_to_delete):
@@ -332,12 +335,12 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
 
     # Filter out files like .logs and rc.txt
     def can_delete(f, weeks_old_before_delete):
-        return True
-        '''Return true if this file should not be deleted in a mop.'''
+        """Return true if this file should not be deleted in a mop."""
+        # return True
         time_created = bucket_dict[f]['time_created']
 
-        # if time_created > datetime.now(time_created.tzinfo) - timedelta(weeks = weeks_old_before_delete):
-        #     return False
+        if time_created > datetime.now(time_created.tzinfo) - timedelta(weeks = weeks_old_before_delete):
+            return False
         filename = f.rsplit('/', 1)[-1]
         # Don't delete logs
         if filename.endswith('.log'):
@@ -364,7 +367,6 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
             for glob in exclude:
                 if fnmatchcase(filename, glob):
                     return False
-
         return True
 
     deletable_files = [f for f in unreferenced_files if can_delete(f, weeks_old)]
@@ -381,6 +383,7 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
 
     workspace_no_spaces = workspace.replace(' ','_')
 
+    files_to_delete_list_path=[]
     if verbose or dry_run:
         # save list to disk
         print("Found {} files to delete.".format(len(deletable_files)) +
@@ -392,7 +395,6 @@ def mop(project, workspace, include, exclude, dry_run, save_dir, yes, verbose, w
         with open(files_to_delete_list_path, "w") as outfile:
             outfile.write("\n".join(deletable_files))
         print("List of files to delete saved to: {}".format(files_to_delete_list_path))
-
 
     message = "WARNING: Delete {} files totaling {} in {} ({})".format(
         len(deletable_files), deletable_size, bucket_prefix,
@@ -442,7 +444,6 @@ def mop_files_from_list(project, workspace, delete_from_list, dry_run, yes, verb
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='clean up intermediate files in a Terra workspace')
 
-
     parser.add_argument('-V', '--verbose', action='count', default=0,
         help='Emit progressively more detailed feedback during execution, '
              'e.g. to confirm when actions have completed or to show URL '
@@ -450,7 +451,6 @@ if __name__ == "__main__":
 
     parser.add_argument("-y", "--yes", action='store_true',
                 help="Assume yes for any prompts")
-    
 
     parser.add_argument('-w', '--workspace',
         required=True, type=str,
