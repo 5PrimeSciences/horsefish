@@ -6,7 +6,7 @@ import os
 # from inspect import getsourcelines
 # from traceback import print_tb as print_traceback
 from io import open
-# from fnmatch import fnmatchcase
+from fnmatch import fnmatchcase
 # from math import ceil
 import argparse
 # import re
